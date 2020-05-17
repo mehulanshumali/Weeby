@@ -78,3 +78,14 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
+
+def search(request):
+    query = request.GET['search_query']
+    if len(query)>20:
+        all_posts = []
+    else:
+        context = {
+            'all_posts': Post.objects.filter(title__icontains=query) | Post.objects.filter(content__icontains=query) ,
+            'query' : query
+        }
+    return render(request, 'blog/search.html' , context)
