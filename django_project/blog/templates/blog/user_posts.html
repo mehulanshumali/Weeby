@@ -2,17 +2,35 @@
 {% block content %}
     <h1 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
     {% for post in posts %}
-        <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-            </div>
-            <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+    <div class="container">
+      <article class="media content-section shadow">
+        <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
           </div>
-        </article>
+
+        <div class="card mb-3 mt-2">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+          <img src="{{ post.image_url }}" class="card-img" alt="..." height="200px">
+          </div>
+          <div class="col-md-">
+            <div class="card-body">
+              <h2><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+              <p class="article-content text-justify">{{ post.content | truncatechars:500 }}</p>
+              {% if post.content > 100 %}
+              <a href="{% url 'post-detail' post.id %}" class="btn btn-outline-primary my-2">Read More</a>
+                {% endif %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+      </article>
+        </div>
+
     {% endfor %}
     {% if is_paginated %}
 
