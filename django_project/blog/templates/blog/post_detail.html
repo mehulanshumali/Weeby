@@ -1,21 +1,257 @@
 {% extends "blog/base.html" %}
+{% load static %}
 {% block content %}
-  <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
-    <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
-        <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
-        {% if object.author == user %}
-          <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1 shadow" href="{% url 'post-update' object.id %}">Update</a>
-            <a class="btn btn-danger btn-sm mt-1 mb-1 shadow" href="{% url 'post-delete' object.id %}">Delete</a>
-          </div>
-        {% endif %}
-      </div>
-      <h2 class="article-title mt-2">{{ object.title }}</h2>
-      <img src="{{ post.image_url }}" class="card-img mt-1" alt="..." height="400px">
-      <p class="article-content mt-3">{{ object.content }}</p>
+<!-- ##### Breadcumb Area Start ##### -->
+<div class="breadcumb-area">
+  <!-- Breadcumb -->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Courses</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Art &amp; Design</li>
+    </ol>
+  </nav>
+</div>
+<!-- ##### Breadcumb Area End ##### -->
+
+<!-- ##### Catagory Area Start ##### -->
+<div class="clever-catagory blog-details bg-img d-flex align-items-center justify-content-center p-3 height-400" style="background-image: url({{object.image.url}});">
+  <div class="blog-details-headline">
+
+    <h3>{{ object.title }}</h3>
+    <div class="meta d-flex align-items-center justify-content-center">
+      <a href="#">{{ object.author }}</a>
+      <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+      <a class="text-capitalize" href="{% url 'catogary' object.catogary %}">{{object.catogary}}</a>
     </div>
-  </article>
+  </div>
+</div>
+
+
+
+
+<!-- ##### Catagory Area End ##### -->
+
+<!-- ##### Blog Details Content ##### -->
+<div class="blog-details-content section-padding-100">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+
+        <!-- Blog Details Text -->
+        <div class="blog-details-text">
+
+          <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}" width="40px" height="40px">
+          <a href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
+
+          <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+
+          {% if object.author == user %}
+          <div>
+            <a class="ml-5 btn btn-secondary btn-sm mt-1 mb-1 shadow px-3" href="{% url 'post-update' object.id %}">Update</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1 shadow px-3" href="{% url 'post-delete' object.id %}">Delete</a>
+          </div>
+          {% endif %}
+          <hr>
+          <p>{{ object.content | safe }}</p>
+          <!-- Tags -->
+          <div class="post-tags">
+            <ul>
+              <li><a href="#">Manual</a></li>
+              <li><a href="#">Liberty</a></li>
+              <li><a href="#">Interpritation</a></li>
+            </ul>
+          </div>
+          <hr>
+          <form action="{% url 'like_post' post.pk %}" method="POST">
+            {% csrf_token %}
+            {{ total_likes }} Likes <br>
+            {% if user.is_authenticated %}
+            {% if is_liked %}
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger">Dislike</button>
+            {% else %}
+
+            <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
+{% endif %}
+
+{% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related-posts section-padding-100-0">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Single Blog Area -->
+        <div class="col-12 col-lg-6">
+          <div class="single-blog-area mb-100">
+            <img src="{% static 'img/blog-img/3.jpg' %} " alt="">
+            <!-- Blog Content -->
+            <div class="blog-content">
+              <a href="#" class="blog-headline">
+                <h4>English Grammer</h4>
+              </a>
+              <div class="meta d-flex align-items-center">
+                <a href="#">Sarah Parker</a>
+                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                <a href="#">Art &amp; Design</a>
+              </div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce enim nulla, mollis eu
+                metus in, sagittis</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Single Blog Area -->
+        <div class="col-12 col-lg-6">
+          <div class="single-blog-area mb-100">
+            <img src="{% static 'img/blog-img/4.jpg' %} " alt="">
+            <!-- Blog Content -->
+            <div class="blog-content">
+              <a href="#" class="blog-headline">
+                <h4>English Grammer</h4>
+              </a>
+              <div class="meta d-flex align-items-center">
+                <a href="#">Sarah Parker</a>
+                <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                <a href="#">Art &amp; Design</a>
+              </div>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce enim nulla, mollis eu
+                metus in, sagittis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <!-- Post A Comment -->
+      <div class="col-12 col-lg-6">
+        <div class="post-a-comments mb-70">
+          <h4>Post a Comment</h4>
+
+          <form action="#" method="post">
+            <div class="row">
+              <div class="col-12 col-lg-6">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="text" placeholder="Name">
+                </div>
+              </div>
+              <div class="col-12 col-lg-6">
+                <div class="form-group">
+                  <input type="email" class="form-control" id="email" placeholder="Email">
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                </div>
+              </div>
+              <div class="col-12">
+                <button class="btn clever-btn w-100">Post A Comment</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <!-- Comments -->
+      <div class="col-12 col-lg-6">
+        <div class="comments-area">
+          <h4>Comments (12)</h4>
+
+          <ol class="comments-list">
+            <!-- Single Comment Area -->
+            <li class="single_comment_area">
+              <!-- Single Comment -->
+              <div class="single-comment-wrap mb-30">
+                <div class="d-flex justify-content-between mb-30">
+                  <!-- Comment Admin -->
+                  <div class="comment-admin d-flex">
+                    <div class="thumb">
+                      <img src="{% static 'img/bg-img/t1.png' %} " alt="">
+                    </div>
+                    <div class="text">
+                      <h6>Sarah Parker</h6>
+                      <span>Sep 29, 2017 at 9:48 am</span>
+                    </div>
+                  </div>
+                  <!-- Reply -->
+                  <div class="reply">
+                    <a href="#">Reply</a>
+                  </div>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce enim nulla, mollis eu
+                  metus in, sagittis.</p>
+              </div>
+
+              <ol class="children">
+                <li class="single_comment_area">
+                  <!-- Single Comment -->
+                  <div class="single-comment-wrap">
+                    <div class="d-flex justify-content-between mb-30">
+                      <!-- Comment Admin -->
+                      <div class="comment-admin d-flex">
+                        <div class="thumb">
+                          <img src="{% static 'img/bg-img/t2.png' %} " alt="">
+                        </div>
+                        <div class="text">
+                          <h6>Sarah Parker</h6>
+                          <span>Sep 29, 2017 at 9:48 am</span>
+                        </div>
+                      </div>
+                      <!-- Reply -->
+                      <div class="reply">
+                        <a href="#">Reply</a>
+                      </div>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce enim nulla,
+                      mollis eu metus in, sagittis.</p>
+                  </div>
+                </li>
+              </ol>
+            </li>
+
+            <li class="single_comment_area mb-30">
+              <!-- Single Comment -->
+              <div class="single-comment-wrap">
+                <div class="d-flex justify-content-between mb-30">
+                  <!-- Comment Admin -->
+                  <div class="comment-admin d-flex">
+                    <div class="thumb">
+                      <img src="{% static 'img/bg-img/t3.png' %}" alt="">
+                    </div>
+                    <div class="text">
+                      <h6>Sarah Parker</h6>
+                      <span>Sep 29, 2017 at 9:48 am</span>
+                    </div>
+                  </div>
+                  <!-- Reply -->
+                  <div class="reply">
+                    <a href="#">Reply</a>
+                  </div>
+                </div>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce enim nulla, mollis eu
+                  metus in, sagittis.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="load-more text-center mt-50">
+          <a href="#" class="btn clever-btn btn-2">Load More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ##### Blog Details Content ##### -->
 {% endblock content %}

@@ -1,0 +1,65 @@
+{% extends "blog/base.html" %}
+{% load static %}
+{% block content %}
+<!-- ##### Blog Area Start ##### -->
+<section class="blog-area blog-page section-padding-100">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-12">
+
+
+        <div class="blog-catagories mb-70 d-flex flex-wrap justify-content-between">
+          {% for cat in cats  %}
+
+          <!-- Single Catagories -->
+          <div class="single-catagories bg-img" style="background-image: url(static/img/bg-img/bc1.jpg);">
+            <a href="{% url 'catogary' cat.name %}">
+              <h6>{{cat.name}}</h6>
+            </a>
+          </div>
+
+          {% endfor %}
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="row">
+      <!-- Single Blog Area -->
+      {% for post in posts  %}
+      <div class="col-12 col-lg-12">
+        <div class="single-blog-area mb-100 wow fadeInUp" data-wow-delay="250ms">
+          <img src="{{ post.image.url}} " alt="">
+          <!-- Blog Content -->
+          <div class="blog-content">
+            <a href="{% url 'post-detail' post.pk %}" class="blog-headline">
+              <h4>{{post.title}}</h4>
+            </a>
+            <div class="meta d-flex align-items-center">
+              <a href="#">{{post.author}}</a>
+              <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+              <a href="#">On - {{post.date_posted}}</a>
+              <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+              <a class="text-capitalize" href="{% url 'catogary' post.catogary %}">{{post.catogary}}</a>
+            </div>
+            <p>{{post.content | truncatechars:400 | safe  }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="load-more text-center mt-100 wow fadeInUp" data-wow-delay="1000ms">
+          <a href="#" class="btn clever-btn btn-2">Load More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ##### Blog Area End ##### -->
+{% endblock content %}

@@ -1,16 +1,27 @@
 {% extends "blog/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Blog Post</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info shadow" type="submit">Post</button>
-            </div>
-        </form>
+
+<div class="container my-4">
+    <div class="row justify-content-center">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Post Blog</h3>
+            <hr>
+            <form method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <fieldset class="form-group">
+                  {{form.media}}
+                  {{ form|crispy }}
+              </fieldset>
+              <div class="form-group">
+                  <button class="btn btn-primary px-4" type="submit">Post</button>
+              </div>
+          </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 {% endblock content %}
