@@ -1,2 +1,2 @@
 # Weeby
-A social network for programmers.
+A blogging website.
